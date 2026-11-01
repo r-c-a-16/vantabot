@@ -1,25 +1,29 @@
 # 🩸 vanta — PhishBot
 
-بوت تيليجرام متكامل لإدارة صفحات الصيد، مبني بلغة Python ويعمل بخادم Flask، مع واجهة أزرار تفاعلية لإدارة كل شيء دون كتابة أوامر.
+A single-file Telegram bot and Flask server designed for automated phishing page management. Built for portability, zero-configuration deployment, and reliable operation across diverse environments.
 
-صُمم ليكون خفيفاً، سريعاً، وقابلاً للتشغيل على الهاتف (Termux) أو أي استضافة تدعم Python.
+## 📖 Overview
 
-## ✨ المميزات
+vanta consolidates the entire application stack — Telegram bot logic, Flask web server, routing, local database, and user interface — into a single, auditable Python file. 
 
-- **22 منصة جاهزة**: توليد روابط صفحات صيد مطابقة للمنصات المشهورة، في ثانية واحدة دون كتابة يدوية.
-- **لوحة تحكم كاملة**: قائمة ضحايا بالترقيم، أزرار تنقّل بين الصفحات، وحالة كل هدف واضحة أمامك.
-- **إشعارات فورية**: تصلك البيانات (المستخدم + كلمة المرور + المنصة + المعرّف) على تيليجرام لحظة إدخالها.
-- **إحصائيات مباشرة**: الإجمالي، المصطاد، المنتظر، وأكثر المنصات استخداماً — محسوبة تلقائياً.
-- **تحكم كامل**: مسح القاعدة بتأكيد، وتخصيص وجهة التحويل بعد الصيد، دون لمس الكود.
-- **تخزين دائم**: حفظ البيانات محلياً في ملف `victims.json` لحمايتها من الضياع.
-- **رابط عام تلقائي**: دعم مدمج لـ `ngrok` لتشغيل البوت برابط عام في ثوانٍ.
+The architecture is intentionally minimal. There are no external databases, no complex state management, and no requirement for container orchestration. The application is designed to run on Android via Termux, on a standard Linux VPS, or on any Python 3.8+ environment.
 
-## 🚀 التشغيل السريع
+## ✨ Technical Features
 
-### المتطلبات
-- Python 3.8 أو أحدث.
+**🎯 Template Engine (22 Platforms)**
+Generates unique, shareable URLs mapped to platform-specific landing pages. The routing layer guarantees unique identifiers (UUIDs) and handles page rendering dynamically via Flask.
 
-### التثبيت
-1. قم بتثبيت المكتبات المطلوبة:
-   ```bash
-   pip install -r requirements.txt
+**📊 Inline Interface**
+Administrative controls are managed entirely through Telegram's Inline Keyboard API. This eliminates the need for command memorization and reduces input errors.
+
+**🔔 Asynchronous Alerts**
+Data submission triggers a non-blocking Telegram notification thread. This ensures the Flask server responds to the client instantly without waiting for the Telegram API request to complete.
+
+**💾 Atomic Local Storage**
+All captured data is stored in a JSON file. Writes are performed atomically (write to temp file, then replace) to prevent database corruption during unexpected shutdowns or power loss.
+
+**⚙️ Runtime Configuration**
+Database management, ngrok tunneling, and post-capture redirect destinations can be modified at runtime through the interface without restarting the service or altering the source code.
+
+**⚡ Dependency Minimalism**
+The application relies on exactly three standard libraries: `flask`, `requests`, and `pyngrok`. The single-file structure ensures that auditing, modifying, and deploying the code requires minimal overhead.
